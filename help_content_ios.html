@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <title>使用帮助</title>
+  <link rel="stylesheet" href="./css/help.css">
+
+
+  <style>
+    body {
+      background: #fff;
+      margin: 0;
+      /* padding-bottom: 2.5rem; */
+    }
+
+    .wrap {
+      /* padding-left: 0.3rem; */
+
+      padding: 0.15rem 0.4rem 0.56rem;
+
+
+    }
+  
+    .wrap ul ul{
+      padding-left: 0.3rem;
+
+    }
+
+    .wrap-title {
+      font-weight: 700;
+      margin-top: 0.1rem;
+
+
+    }
+
+    .wrap-content {
+      color: #333333;
+            font-size: .28rem;
+            margin-top: .1rem;
+      
+    }
+
+    .wrap-pic {
+      width: 100%;
+
+    }
+    
+    /* 适配 */
+
+
+    * {
+      padding: 0;
+      margin: 0;
+
+    }
+
+    .container {
+
+      /* height: 100vh; */
+      /* padding-top: 2rem; */
+      padding-left: 3rem;
+      padding-right: 3rem;
+      padding-top: 4.1875rem;
+      padding-bottom: 11.5625rem;
+      background-color: #F7FCFF;
+
+      /* flex-direction: column;
+            align-items: center; */
+      /* justify-content: center; */
+
+
+
+    }
+
+    .header {
+      width: 4rem;
+      height: 4rem;
+      margin-right: .3125rem;
+    }
+
+    .header1 {
+      background: url(../img/1.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .header2 {
+      background: url(../img/2.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .header3 {
+      background: url(../img/3.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .df {
+      display: flex;
+    }
+
+    .title {
+
+      margin-bottom: 3.4375rem;
+      /* font-size: .32rem; */
+    color: #1C1D20;
+    font-weight: 700;
+      /* font-size: 2.5rem;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #1C1D20; */
+      /* line-height: 3.5rem; */
+      flex-direction: column;
+
+    }
+
+    .label {
+      padding-top: .875rem;
+    }
+
+    .slabel {
+      /* 距离下方图片的高度 */
+      margin-bottom: 3.4375rem;
+      /* font-size: 1.75rem; */
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #1C1D20;
+      /* line-height: 2.5rem */
+    }
+
+    .image1 {
+      width: 35.125rem;
+      height: 19.125rem;
+      margin-bottom: 3.4375rem;
+      background: url(../img/first.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .imagespeciallabel1 {
+      width: 43.6875rem;
+      height: 28.3125rem;
+      margin-bottom: 3.4375rem;
+      background: url(../img/help/help11-1.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .imagespeciallabel2 {
+      width: 43.75rem;
+      height: 29.5625rem;
+      margin-bottom: 3.4375rem;
+      background: url(../img/help/help11-2.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+
+    .image2 {
+      width: 35.125rem;
+      height: 38rem;
+      margin-bottom: 4.0625rem;
+      background: url(../img/second.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .image3 {
+      width: 35.125rem;
+      height: 37.25rem;
+      margin-bottom: 3.4375rem;
+      background: url(../img/third.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .image4 {
+      width: 37.625rem;
+      height: 35.5625rem;
+      margin-bottom: 4.125rem;
+      background: url(../img/fourth.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .top {
+      margin-bottom: 2.25rem
+    }
+
+    .imgcontainer {
+      display: flex;
+      justify-content: center;
+
+    }
+
+    .special {
+      margin-bottom: 2.5rem;
+    }
+
+    .speciallabel {
+      font-size: 2rem;
+      color: #333333;
+      margin-bottom: 1.125rem;
+    }
+    a{text-decoration:none}
+    .adjust{
+      width: 60%;
+    margin-bottom: 0.25rem;
+    }
+    .tac{
+      text-align: center;
+    }
+    .miniImg{
+
+      height: 2.375rem;
+      width: 2.5rem;
+    
+
+
+    }
+    .dib{
+      display:inline-block;
+   
+      /* display: flex; */
+      vertical-align: middle;
+
+    }
+    .pl3rem{
+        padding-left: 0.3rem;
+    }
+    .ltittle{
+      font-size: .32rem;
+            color: #1C1D20;
+            font-weight: 700;
+    }
+    li{
+        color: #333333;
+    /* font-size: .28rem; */
+    margin-bottom: 0.1rem;
+    /* padding-bottom: 1rem; */
+    }
+     /*引入的购物返现图片样式调整 */
+     .gouwu {
+      margin: 0;
+      padding: 0;
+    }
+   .gouwu img {
+      display: block;
+      width: 100%;
+    }
+    /* 引入的积分的样式 */
+    .jifen{
+            -webkit-overflow-scrolling: touch;
+            font-family: "Microsoft YaHei";
+        }
+        .jifen .jifen .question-wrap{
+            padding: 0 .32rem .56rem;
+        }
+        .jifen .question-wrap:first-child{
+            padding-top: .46rem;
+        }
+        .jifen .question-wrap .title{
+            font-size: .32rem;
+            color: #1C1D20;
+            font-weight: 700;
+        }
+        .jifen .question-wrap .answer{
+            color: #333333;
+            font-size: .28rem;
+            margin-top: .1rem;
+        }
+        .jifen .question-wrap .get-list .item{
+            margin-top: .4rem;
+        }
+        .jifen .question-wrap .get-list .name{
+            font-size: .32rem;
+            color: #1C1D20;
+            margin-bottom: .16rem;
+        }
+        .jifen .question-wrap .get-list table{
+            font-size: .24rem;
+            color: #333;
+            border-collapse:collapse;
+            width: 100%;
+        }
+        .jifen .question-wrap table td{
+            height: .7rem;
+            border: .02rem solid #D5D5D5;
+            padding-left: .46rem;
+        }
+        .jifen .question-wrap tr td:first-child{
+            width: 2.39rem;
+            box-sizing: border-box;
+            padding-left: .2rem;
+        }
+        .mb10{
+          margin-bottom: .625rem;
+        }
+        .pb00{
+          margin-bottom: 0.1rem
+        }
+  </style>
+
+<style type="text/css">/* Copyright 2014-present Evernote Corporation. All rights reserved. */
+.skitchToastBoxContainer {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 30px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    pointer-events: none;
+}
+
+.skitchToastBox {
+    width: 200px;
+    height: 16px;
+    padding: 12px;
+    background-color: rgba(47, 55, 61, 0.95);
+    border-radius: 4px;
+    color: white;
+    cursor: default;
+    font-size: 10pt;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.32);
+    font-family: 'Soleil', Helvetica, Arial, sans-serif;
+    border: 2px rgba(255, 255, 255, 0.38) solid;
+}
+
+.lang-zh-cn .skitchToastBox {
+    font-family: '微软雅黑', 'Microsoft YaHei', SimSun,
+        '&#x30E1;&#x30A4;&#x30EA;&#x30AA;', Meiryo, 'MS PGothic', 'Soleil',
+        Helvetica, Arial, sans-serif;
+}
+
+.lang-ja-jp .skitchToastBox {
+    font-family: '&#x30E1;&#x30A4;&#x30EA;&#x30AA;', Meiryo, 'MS PGothic',
+        '微软雅黑', 'Microsoft YaHei', SimSun, 'Soleil', Helvetica, Arial,
+        sans-serif;
+}
+
+.skitchToast {
+    padding-left: 20px;
+    padding-right: 20px;
+    display: inline-block;
+    height: 10px;
+    color: #f1f5f8;
+    text-align: center;
+}
+
+.skitchVisible {
+    /* Don't remove this class it's a hack used by the Evernote Clipper */
+}
+</style>
+
+<style type="text/css">/* Copyright 2014-present Evernote Corporation. All rights reserved. */
+@font-face {
+	font-family: 'Soleil';
+	font-weight: normal;
+	font-style: normal;
+}
+</style>
+
+<style type="text/css">/* Copyright 2019-present Evernote Corporation. All rights reserved. */
+#en-markup-disabled {
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    cursor: default;
+    -webkit-user-select: none;
+}
+
+#en-markup-alert-container {
+    position: absolute;
+    z-index: 9999;
+    width: 450px;
+    left: calc(50% - 225px);
+    top: calc(50% - 85px);
+    background-color: white;
+    box-shadow: 0 2px 7px 1px rgba(0,0,0,0.35);
+    -webkit-user-select: none;
+}
+
+#en-markup-alert-container .cell-1 {
+    position: relative;
+    height: 110px;
+    width: 105px;
+    float: left;
+    text-align: center;
+    background-position: 65% 50%;
+    background-repeat: no-repeat;
+}
+
+#en-markup-alert-container .cell-2 {
+    position: relative;
+    float: left;
+    width: 345px;
+    margin-top: 29px;
+    margin-bottom: 20px;
+}
+
+#en-markup-alert-container .cell-2 .cell-2-title {
+    margin-bottom: 5px;
+    padding-right: 30px;
+    font-size: 12pt;
+    font-family: Tahoma, Arial;
+}
+
+#en-markup-alert-container .cell-2 .cell-2-message {
+    padding-right: 30px;
+    font-size: 9.5pt;
+    font-family: Tahoma, Arial;
+}
+
+#en-markup-alert-container .cell-3 {
+    position: relative;
+    width: 450px;
+    height: 60px;
+    float: left;
+    background-color: rgb(240,240,240);
+}
+
+#en-markup-alert-container .cell-3 button {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    width: 110px;
+    height: 36px;
+}
+
+#en-markup-alert-container .cell-3 button.alt-button {
+    position: absolute;
+    top: 12px;
+    right: 140px;
+    width: 110px;
+    height: 36px;
+}
+</style></head>
+
+<body>
+  <div class="wrap"><div class="wrap-content"><b class="ltittle">1.1 忘记登录密码怎么办？</b></div><div class="wrap-content">如果您忘记登录密码，请按以下步骤操作：</div><div class="wrap-content"><ul class="pl3rem"> <li>在登录界面选择「找回密码」</li> <li>输入绑定的手机号，获取验证码</li> <li>重置您的登录密码</li> <li><b>注意：如果手机号已不再使用，无法接收验证码，可通过【我的 ➝ 设置 ➝ 意见反馈】咨询客服解决</b></li></ul></div></div>
+	<script src="./js/renew_assist_ios.js"></script>
+
+  <script>
+    (function () {
+
+      document.getElementsByClassName('wrap')[0].innerHTML = 123
+      var indexNum = window.location.search.substr(1).indexOf('index')
+      var index = window.location.search.substr(1).substr(indexNum + 6) || 0
+
+      var contentStr = ''
+      for (var i = 0; i < contentList[index].content.length; i++) {
+        contentStr += "<div class='wrap-content'>" + contentList[index].content[i] + "</div>"
+
+      }
+
+      var imgStr = ''
+      if (contentList[index].imgList) {
+        for (var i = 0; i < contentList[index].imgList.length; i++) {
+          imgStr += "<img src='" + contentList[index].imgList[i] +"'" +"class='wrap-pic'>"
+
+        }
+      }
+
+
+      document.getElementsByClassName('wrap')[0].innerHTML = contentStr + imgStr
+   
+      // 动态改变fontsize大小
+      // var doc = document.documentElement
+      // function getSize() {
+      //   function getWidth() {
+      //     var myWidth = 0
+      //     if (typeof (myWidth) === 'number') {
+      //       myWidth = window.myWidth
+      //     } else if (document.documentElement && (document.documentElement.clientWidth)) {
+      //       myWidth = document.documentElement.clientWidth
+      //     } else if (document.body && (document.body.clientWidth)) {
+      //       myWidth = document.body.clientWidth
+
+      //     }
+      //     return parseInt(myWidth)
+      //   }
+      //   var screenWidth = window.screen.width > getWidth() ? etWidth() : window.screen.width
+      //   if (screenWidth >= 768) {
+      //     screenWidth = 768
+      //   }
+      //   doc.style.fontSize = screenWidth / (750 / 16) + 'px'
+
+      // }
+      // getSize()
+      // window.addEventListener('resize', function () {
+      //   getSize()
+      // })
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
