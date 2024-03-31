@@ -186,7 +186,7 @@
         if (window.parent.onVideoUploaded) {
             window.parent.onVideoUploaded()
         }
-        jqueryDom.html(res.data.key)
+        jqueryDom.html(res.data)
     }
 
     uploadWithSDK(gettokenfunction, putExtra, config,  onCompleted);
