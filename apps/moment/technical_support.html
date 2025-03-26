@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术支持 - moment</title>
+    <style>
+        body {
+            background: #F5F5F5;
+            margin: 0;
+            color: #1C1D20;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1C1D20;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #1C1D20;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1C1D20;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .screenshot-item {
+            text-align: center;
+        }
+
+        .screenshot-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .screenshot-desc {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .contact {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .contact-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            color: #666;
+        }
+
+        .contact-info a {
+            color: #007AFF;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">moment - 随时随地记录你的想法💡</h1>
+            <p class="subtitle">一款简洁优雅的记录工具，帮助您轻松记录每一个想法和瞬间。支持 iCloud 同步，Face ID 安全保护，让资产管理更加便捷安全。</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">主要功能</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3 class="feature-title">分类管理</h3>
+                    <p class="feature-desc">支持多种资产分类方式，包括固定资产、流动资产分类等，也可以添加自定义分类，分类管理更轻松。</p>
+                </div>
+                <div class="feature-item">
+                    <h3 class="feature-title">资产管理</h3>
+                    <p class="feature-desc">全面的资产管理功能，支持现金、银行卡、信用卡等多种资产形式的管理。</p>
+                </div>
+                <div class="feature-item">
+                    <h3 class="feature-title">数据分析</h3>
+                    <p class="feature-desc">智能分析收支情况，生成直观的统计图表，帮助您更好地了解消费习惯。</p>
+                </div>
+                <div class="feature-item">
+                    <h3 class="feature-title">预算规划</h3>
+                    <p class="feature-desc">设置月度预算，实时跟踪支出情况，合理规划个人财务。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">使用指南</h2>
+            <div class="screenshots">
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot1.png" alt="首页总览" class="screenshot-img">
+                    <p class="screenshot-desc">首页总览 - 清晰展示收支情况</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot2.png" alt="记账界面" class="screenshot-img">
+                    <p class="screenshot-desc">快速记账 - 简单直观的操作界面</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot3.png" alt="资产管理" class="screenshot-img">
+                    <p class="screenshot-desc">资产管理 - 多样化的资产形式支持</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot4.png" alt="数据统计" class="screenshot-img">
+                    <p class="screenshot-desc">数据统计 - 直观的图表分析</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot5.png" alt="预算设置" class="screenshot-img">
+                    <p class="screenshot-desc">预算设置 - 灵活的预算管理</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot6.png" alt="账单详情" class="screenshot-img">
+                    <p class="screenshot-desc">账单详情 - 清晰的收支记录</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="img/app-asflow-screenshot7.png" alt="设置中心" class="screenshot-img">
+                    <p class="screenshot-desc">设置中心 - 个性化的功能配置</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact">
+            <h2 class="contact-title">技术支持</h2>
+            <div class="contact-info">
+                <p>如果您在使用过程中遇到任何问题，请通过以下方式联系我们：</p>
+                <p>邮箱：<a href="mailto:542270559@qq.com">542270559@qq.com</a></p>
+                <p>官方网站：<a href="https://www.vance.xin">www.vance.xin</a></p>
+                <p>工作时间：周一至周五 9:00-18:00</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
