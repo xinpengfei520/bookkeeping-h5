@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI实时会议录音助手</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --secondary-color: #5AC8FA;
+            --success-color: #4CD964;
+            --danger-color: #FF3B30;
+            --warning-color: #FF9500;
+            --info-color: #5AC8FA;
+            --light-color: #F2F2F7;
+            --dark-color: #1C1C1E;
+            --gray-color: #8E8E93;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #F2F2F7;
+            color: #1C1C1E;
+            line-height: 1.5;
+            padding: 20px;
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .screen {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 375px;
+            height: 812px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .screen-title {
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            padding: 48px 16px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .header-button {
+            color: var(--primary-color);
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            position: relative;
+        }
+        
+        .footer {
+            padding: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 24px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .button:hover {
+            opacity: 0.9;
+        }
+        
+        .button.secondary {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .button.danger {
+            background-color: var(--danger-color);
+        }
+        
+        .button.success {
+            background-color: var(--success-color);
+        }
+        
+        .button-icon {
+            margin-right: 8px;
+        }
+        
+        /* 录音主界面样式 */
+        .record-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+        
+        .record-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            background-color: var(--danger-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(255, 59, 48, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .record-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .record-button i {
+            font-size: 48px;
+            color: white;
+        }
+        
+        .record-tip {
+            font-size: 18px;
+            color: var(--gray-color);
+            text-align: center;
+            margin-top: 16px;
+        }
+        
+        /* 录音进行中界面样式 */
+        .recording-header {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .recording-timer {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin: 16px 0;
+        }
+        
+        .waveform {
+            height: 100px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .waveform-bars {
+            display: flex;
+            height: 70%;
+            align-items: flex-end;
+            padding: 0 8px;
+            position: absolute;
+            bottom: 15%;
+            left: 0;
+            right: 0;
+        }
+        
+        .waveform-bar {
+            flex: 1;
+            background-color: var(--primary-color);
+            margin: 0 1px;
+            border-radius: 2px 2px 0 0;
+            animation: waveform-animation 0.5s infinite alternate;
+        }
+        
+        @keyframes waveform-animation {
+            0% {
+                height: 10%;
+            }
+            100% {
+                height: 100%;
+            }
+        }
+        
+        .waveform-timeline {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 15%;
+            display: flex;
+            padding: 0 8px;
+            align-items: center;
+        }
+        
+        .waveform-timeline-mark {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            color: var(--gray-color);
+        }
+        
+        .asr-results {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .asr-message {
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .asr-message:last-child {
+            margin-bottom: 0;
+        }
+        
+        .asr-speaker {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .asr-speaker-edit {
+            margin-left: 8px;
+            font-size: 12px;
+            color: var(--gray-color);
+            cursor: pointer;
+        }
+        
+        .asr-text {
+            color: var(--dark-color);
+        }
+        
+        .recording-controls {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .control-button {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .control-button i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+        
+        .control-button-text {
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+        
+        /* 内容类型选择界面样式 */
+        .content-type-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .content-type-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .content-type-item {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .content-type-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-type-item.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 122, 255, 0.1);
+        }
+        
+        .content-type-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .content-type-name {
+            font-weight: 500;
+        }
+        
+        /* 报告详情页样式 */
+        .report-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+        }
+        
+        .report-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            position: relative;
+            color: var(--gray-color);
+        }
+        
+        .report-tab.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .report-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .report-content {
+            padding: 16px 0;
+        }
+        
+        .report-section {
+            margin-bottom: 24px;
+        }
+        
+        .report-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .report-section-content {
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .report-action-button {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .report-action-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .report-action-button i {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .report-action-text {
+            font-size: 12px;
+            color: var(--dark-color);
+        }
+        
+        .mindmap {
+            width: 100%;
+            height: 300px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .mindmap img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* 历史记录页样式 */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .history-item {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 16px;
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .history-item-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .history-item-date {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .history-item-type {
+            font-size: 14px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .history-item-duration {
+            font-size: 14px;
+            color: var(--gray-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .history-item-duration i {
+            margin-right: 4px;
+        }
+        
+        .history-item-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+        
+        .history-item-action {
+            padding: 4px 8px;
+            font-size: 12px;
+            color: var(--gray-color);
+            cursor: pointer;
+        }
+        
+        .history-item-action:hover {
+            color: var(--danger-color);
+        }
+        
+        /* 说话人编辑弹窗样式 */
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 80%;
+            max-width: 300px;
+            padding: 24px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .modal-button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .modal-button.cancel {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .modal-button.confirm {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI实时会议录音助手原型设计</h1>
+    
+    <div class="container">
+        <!-- 录音主界面 -->
+        <div>
+            <div class="screen">
+                <div class="header">
+                    <button class="header-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">AI录音助手</div>
+                    <button class="header-button">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="record-main">
+                        <div class="record-button">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="record-tip">点击开始录音</div>
+                        <p style="margin-top: 40px; text-align: center; color: var(--gray-color);">
+                            AI助手将实时转写您的会议内容<br>
+                            并提供智能分析和总结
+                        </p>
+                    </div>
+                </div>
+                <div class="footer">
+                    <button class="button secondary">
+                        <i class="fas fa-history button-icon"></i>
+                        查看历史记录
+                    </button>
+                </div>
+            </div>
+            <div class="screen-title">录音主界面</div>
+        </div>
+        
+        <!-- 录音进行中界面 -->
+        <div>
+            <div class="screen">
+                <div class="header recording-header">
+                    <button class="header-button" style="color: white;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">正在录音</div>
+                    <button class="header-button" style="color: white;">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="recording-timer">00:05:32</div>
+                    
+                    <div class="waveform">
+                        <div class="waveform-bars">
+                            <div class="waveform-bar" style="height: 30%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 70%;"></div>
+                            <div class="waveform-bar" style="height: 90%;"></div>
+                            <div class="waveform-bar" style="height: 60%;"></div>
+                            <div class="waveform-bar" style="height: 40%;"></div>
+                            <div class="waveform-bar" style="height: 80%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 30%;"></div>
+                            <div class="waveform-bar" style="height: 60%;"></div>
+                            <div class="waveform-bar" style="height: 70%;"></div>
+                            <div class="waveform-bar" style="height: 40%;"></div>
+                            <div class="waveform-bar" style="height: 20%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 80%;"></div>
+                            <div class="waveform-bar" style="height: 60%;"></div>
+                            <div class="waveform-bar" style="height: 30%;"></div>
+                            <div class="waveform-bar" style="height: 70%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 40%;"></div>
+                        </div>
+                        <div class="waveform-timeline">
+                            <div class="waveform-timeline-mark">0s</div>
+                            <div class="waveform-timeline-mark">5s</div>
+                            <div class="waveform-timeline-mark">10s</div>
+                            <div class="waveform-timeline-mark">15s</div>
+                            <div class="waveform-timeline-mark">20s</div>
+                        </div>
+                    </div>
+                    
+                    <div class="asr-results">
+                        <div class="asr-message">
+                            <div class="asr-speaker">
+                                张经理
+                                <div class="asr-speaker-edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </div>
+                            </div>
+                            <div class="asr-text">大家好，今天我们讨论一下新产品的营销策略，希望能够在下个季度提升销售额。</div>
+                        </div>
+                        <div class="asr-message">
+                            <div class="asr-speaker">
+                                李总监
+                                <div class="asr-speaker-edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </div>
+                            </div>
+                            <div class="asr-text">我认为我们应该加大社交媒体的投入，现在年轻人都在这些平台上活跃。</div>
+                        </div>
+                        <div class="asr-message">
+                            <div class="asr-speaker">
+                                王设计师
+                                <div class="asr-speaker-edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </div>
+                            </div>
+                            <div class="asr-text">我们可以考虑与一些有影响力的KOL合作，提高品牌知名度。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="recording-controls">
+                        <div class="control-button">
+                            <i class="fas fa-pause"></i>
+                            <div class="control-button-text">暂停</div>
+                        </div>
+                        <div class="control-button">
+                            <i class="fas fa-stop"></i>
+                            <div class="control-button-text">结束</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-title">录音进行中界面</div>
+        </div>
+        
+        <!-- 说话人编辑弹窗 -->
+        <div>
+            <div class="screen">
+                <div class="header recording-header">
+                    <button class="header-button" style="color: white;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">正在录音</div>
+                    <button class="header-button" style="color: white;">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="recording-timer">00:07:15</div>
+                    
+                    <div class="waveform">
+                        <div class="waveform-bars">
+                            <div class="waveform-bar" style="height: 30%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 70%;"></div>
+                            <div class="waveform-bar" style="height: 90%;"></div>
+                            <div class="waveform-bar" style="height: 60%;"></div>
+                            <div class="waveform-bar" style="height: 40%;"></div>
+                            <div class="waveform-bar" style="height: 80%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 30%;"></div>
+                            <div class="waveform-bar" style="height: 60%;"></div>
+                            <div class="waveform-bar" style="height: 70%;"></div>
+                            <div class="waveform-bar" style="height: 40%;"></div>
+                            <div class="waveform-bar" style="height: 20%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 80%;"></div>
+                            <div class="waveform-bar" style="height: 60%;"></div>
+                            <div class="waveform-bar" style="height: 30%;"></div>
+                            <div class="waveform-bar" style="height: 70%;"></div>
+                            <div class="waveform-bar" style="height: 50%;"></div>
+                            <div class="waveform-bar" style="height: 40%;"></div>
+                        </div>
+                        <div class="waveform-timeline">
+                            <div class="waveform-timeline-mark">0s</div>
+                            <div class="waveform-timeline-mark">5s</div>
+                            <div class="waveform-timeline-mark">10s</div>
+                            <div class="waveform-timeline-mark">15s</div>
+                            <div class="waveform-timeline-mark">20s</div>
+                        </div>
+                    </div>
+                    
+                    <div class="asr-results">
+                        <div class="asr-message">
+                            <div class="asr-speaker">
+                                张经理
+                                <div class="asr-speaker-edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </div>
+                            </div>
+                            <div class="asr-text">大家好，今天我们讨论一下新产品的营销策略，希望能够在下个季度提升销售额。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-title">说话人编辑弹窗</div>
+        </div>
+        
+        <!-- 内容类型选择界面 -->
+        <div>
+            <div class="screen">
+                <div class="header">
+                    <button class="header-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">选择内容类型</div>
+                    <button class="header-button" style="visibility: hidden;">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="content-type-header">
+                        <h3>请选择录音内容的类型</h3>
+                        <p style="color: var(--gray-color);">选择合适的类型可以获得更精准的AI分析</p>
+                    </div>
+                    
+                    <div class="content-type-list">
+                        <div class="content-type-item selected">
+                            <div class="content-type-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="content-type-name">会议</div>
+                        </div>
+                        <div class="content-type-item">
+                            <div class="content-type-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="content-type-name">课堂听课</div>
+                        </div>
+                        <div class="content-type-item">
+                            <div class="content-type-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="content-type-name">定期例会</div>
+                        </div>
+                        <div class="content-type-item">
+                            <div class="content-type-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="content-type-name">头脑风暴</div>
+                        </div>
+                        <div class="content-type-item">
+                            <div class="content-type-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="content-type-name">商务谈判</div>
+                        </div>
+                        <div class="content-type-item">
+                            <div class="content-type-icon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="content-type-name">其他</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px;">
+                        <input type="text" class="modal-input" placeholder="为这次录音添加标题（选填）">
+                    </div>
+                </div>
+                <div class="footer">
+                    <button class="button">
+                        <i class="fas fa-check button-icon"></i>
+                        提交并分析
+                    </button>
+                </div>
+            </div>
+            <div class="screen-title">内容类型选择界面</div>
+        </div>
+        
+        <!-- 报告详情页-原文 -->
+        <div>
+            <div class="screen">
+                <div class="header">
+                    <button class="header-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">产品营销策略会议</div>
+                    <button class="header-button">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="report-tabs">
+                        <div class="report-tab active">原文</div>
+                        <div class="report-tab">分析报告</div>
+                        <div class="report-tab">思维导图</div>
+                    </div>
+                    
+                    <div class="report-content">
+                        <div class="report-section">
+                            <div class="report-section-title">会议信息</div>
+                            <div class="report-section-content">
+                                <p><strong>时长：</strong>15分32秒</p>
+                                <p><strong>时间：</strong>2023年10月15日 14:30</p>
+                                <p><strong>类型：</strong>会议</p>
+                                <p><strong>参与人：</strong>张经理、李总监、王设计师、赵产品经理</p>
+                            </div>
+                        </div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">会议内容</div>
+                            <div class="report-section-content">
+                                <p><strong>张经理 (00:00:05)：</strong>大家好，今天我们讨论一下新产品的营销策略，希望能够在下个季度提升销售额。</p>
+                                <p><strong>李总监 (00:01:23)：</strong>我认为我们应该加大社交媒体的投入，现在年轻人都在这些平台上活跃。</p>
+                                <p><strong>王设计师 (00:02:47)：</strong>我们可以考虑与一些有影响力的KOL合作，提高品牌知名度。</p>
+                                <p><strong>赵产品经理 (00:03:58)：</strong>我们的产品定位是面向25-35岁的年轻白领，所以营销渠道也应该针对这个群体。</p>
+                                <p><strong>张经理 (00:05:12)：</strong>大家说得都很好，我们需要制定一个综合性的营销方案，包括线上和线下渠道。</p>
+                                <p><strong>李总监 (00:06:35)：</strong>我们可以考虑在一些热门商圈进行线下推广活动，增加用户体验感。</p>
+                                <p><strong>王设计师 (00:08:20)：</strong>我们的产品包装设计也需要更加年轻化，符合目标用户的审美。</p>
+                                <p><strong>赵产品经理 (00:10:05)：</strong>我们还需要考虑用户留存问题，可以设计一些会员福利和活动。</p>
+                                <p><strong>张经理 (00:12:30)：</strong>好的，那我们下周再详细讨论具体的执行方案，今天先到这里。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-actions">
+                        <div class="report-action-button">
+                            <i class="fas fa-copy"></i>
+                            <div class="report-action-text">复制文本</div>
+                        </div>
+                        <div class="report-action-button">
+                            <i class="fas fa-download"></i>
+                            <div class="report-action-text">下载文件</div>
+                        </div>
+                        <div class="report-action-button">
+                            <i class="fas fa-share-alt"></i>
+                            <div class="report-action-text">分享链接</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-title">报告详情页-原文</div>
+        </div>
+        
+        <!-- 报告详情页-分析报告 -->
+        <div>
+            <div class="screen">
+                <div class="header">
+                    <button class="header-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">产品营销策略会议</div>
+                    <button class="header-button">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="report-tabs">
+                        <div class="report-tab">原文</div>
+                        <div class="report-tab active">分析报告</div>
+                        <div class="report-tab">思维导图</div>
+                    </div>
+                    
+                    <div class="report-content">
+                        <div class="report-section">
+                            <div class="report-section-title">会议摘要</div>
+                            <div class="report-section-content">
+                                <p>本次会议主要讨论了新产品的营销策略，旨在提升下季度销售额。与会人员包括张经理、李总监、王设计师和赵产品经理。会议围绕目标用户群体（25-35岁年轻白领）展开，讨论了社交媒体投入、KOL合作、线上线下渠道整合、产品包装设计优化以及用户留存策略等方面。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">关键决策点</div>
+                            <div class="report-section-content">
+                                <p>1. 增加社交媒体营销投入</p>
+                                <p>2. 与有影响力的KOL合作提高品牌知名度</p>
+                                <p>3. 在热门商圈进行线下推广活动</p>
+                                <p>4. 优化产品包装设计，使其更符合年轻用户审美</p>
+                                <p>5. 设计会员福利和活动提高用户留存率</p>
+                                <p>6. 下周讨论具体执行方案</p>
+                            </div>
+                        </div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">参与者贡献分析</div>
+                            <div class="report-section-content">
+                                <p><strong>张经理：</strong>主导会议进程，提出综合性营销方案的构想</p>
+                                <p><strong>李总监：</strong>提出社交媒体投入和线下推广活动建议</p>
+                                <p><strong>王设计师：</strong>关注KOL合作和产品包装设计优化</p>
+                                <p><strong>赵产品经理：</strong>明确目标用户群体，提出用户留存策略</p>
+                            </div>
+                        </div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">后续行动建议</div>
+                            <div class="report-section-content">
+                                <p>1. 制定详细的社交媒体营销计划，包括平台选择和内容策略</p>
+                                <p>2. 筛选合适的KOL资源，评估合作成本和预期效果</p>
+                                <p>3. 设计线下推广活动方案，选择合适的商圈和时间点</p>
+                                <p>4. 启动产品包装设计优化项目，进行用户测试</p>
+                                <p>5. 开发会员体系和活动计划，提高用户粘性</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-actions">
+                        <div class="report-action-button">
+                            <i class="fas fa-copy"></i>
+                            <div class="report-action-text">复制文本</div>
+                        </div>
+                        <div class="report-action-button">
+                            <i class="fas fa-download"></i>
+                            <div class="report-action-text">下载文件</div>
+                        </div>
+                        <div class="report-action-button">
+                            <i class="fas fa-share-alt"></i>
+                            <div class="report-action-text">分享链接</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-title">报告详情页-分析报告</div>
+        </div>
+        
+        <!-- 报告详情页-思维导图 -->
+        <div>
+            <div class="screen">
+                <div class="header">
+                    <button class="header-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">产品营销策略会议</div>
+                    <button class="header-button">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="report-tabs">
+                        <div class="report-tab">原文</div>
+                        <div class="report-tab">分析报告</div>
+                        <div class="report-tab active">思维导图</div>
+                    </div>
+                    
+                    <div class="report-content">
+                        <div class="mindmap">
+                            <!-- 这里使用简单的SVG来模拟思维导图 -->
+                            <svg width="100%" height="100%" viewBox="0 0 800 600">
+                                <!-- 中心主题 -->
+                                <rect x="350" y="250" width="120" height="60" rx="10" fill="#007AFF" />
+                                <text x="410" y="280" text-anchor="middle" fill="white" font-weight="bold">产品营销策略</text>
+                                
+                                <!-- 连接线 -->
+                                <line x1="410" y1="250" x2="410" y2="200" stroke="#007AFF" stroke-width="2" />
+                                <line x1="410" y1="310" x2="410" y2="360" stroke="#007AFF" stroke-width="2" />
+                                <line x1="350" y1="280" x2="250" y2="280" stroke="#007AFF" stroke-width="2" />
+                                <line x1="470" y1="280" x2="570" y2="280" stroke="#007AFF" stroke-width="2" />
+                                
+                                <!-- 子主题 -->
+                                <rect x="350" y="140" width="120" height="50" rx="8" fill="#5AC8FA" />
+                                <text x="410" y="165" text-anchor="middle" fill="white">目标用户</text>
+                                
+                                <rect x="350" y="360" width="120" height="50" rx="8" fill="#5AC8FA" />
+                                <text x="410" y="385" text-anchor="middle" fill="white">用户留存</text>
+                                
+                                <rect x="130" y="255" width="120" height="50" rx="8" fill="#5AC8FA" />
+                                <text x="190" y="280" text-anchor="middle" fill="white">线上渠道</text>
+                                
+                                <rect x="570" y="255" width="120" height="50" rx="8" fill="#5AC8FA" />
+                                <text x="630" y="280" text-anchor="middle" fill="white">线下渠道</text>
+                                
+                                <!-- 三级主题 -->
+                                <line x1="190" y1="255" x2="190" y2="200" stroke="#5AC8FA" stroke-width="2" />
+                                <rect x="130" y="150" width="120" height="40" rx="6" fill="#4CD964" />
+                                <text x="190" y="175" text-anchor="middle" fill="white">社交媒体</text>
+                                
+                                <line x1="190" y1="305" x2="190" y2="360" stroke="#5AC8FA" stroke-width="2" />
+                                <rect x="130" y="360" width="120" height="40" rx="6" fill="#4CD964" />
+                                <text x="190" y="385" text-anchor="middle" fill="white">KOL合作</text>
+                                
+                                <line x1="630" y1="255" x2="630" y2="200" stroke="#5AC8FA" stroke-width="2" />
+                                <rect x="570" y="150" width="120" height="40" rx="6" fill="#4CD964" />
+                                <text x="630" y="175" text-anchor="middle" fill="white">商圈活动</text>
+                                
+                                <line x1="630" y1="305" x2="630" y2="360" stroke="#5AC8FA" stroke-width="2" />
+                                <rect x="570" y="360" width="120" height="40" rx="6" fill="#4CD964" />
+                                <text x="630" y="385" text-anchor="middle" fill="white">产品包装</text>
+                            </svg>
+                        </div>
+                        
+                        <p style="text-align: center; margin-top: 16px; color: var(--gray-color);">
+                            思维导图展示了会议中讨论的主要营销策略要点及其关系
+                        </p>
+                        
+                        <div class="report-actions">
+                            <div class="report-action-button">
+                                <i class="fas fa-expand"></i>
+                                <div class="report-action-text">全屏查看</div>
+                            </div>
+                            <div class="report-action-button">
+                                <i class="fas fa-download"></i>
+                                <div class="report-action-text">下载图片</div>
+                            </div>
+                            <div class="report-action-button">
+                                <i class="fas fa-share-alt"></i>
+                                <div class="report-action-text">分享链接</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-title">报告详情页-思维导图</div>
+        </div>
+        
+        <!-- 历史记录页面 -->
+        <div>
+            <div class="screen">
+                <div class="header">
+                    <button class="header-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="header-title">录音历史</div>
+                    <button class="header-button" style="visibility: hidden;">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="history-list">
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <div class="history-item-title">产品营销策略会议</div>
+                                <div class="history-item-date">今天 14:30</div>
+                            </div>
+                            <div class="history-item-type">
+                                <i class="fas fa-users"></i> 会议
+                            </div>
+                            <div class="history-item-duration">
+                                <i class="fas fa-clock"></i> 15分32秒
+                            </div>
+                            <div class="history-item-actions">
+                                <div class="history-item-action">
+                                    <i class="fas fa-trash-alt"></i> 删除
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <div class="history-item-title">产品设计评审会</div>
+                                <div class="history-item-date">昨天 10:15</div>
+                            </div>
+                            <div class="history-item-type">
+                                <i class="fas fa-users"></i> 会议
+                            </div>
+                            <div class="history-item-duration">
+                                <i class="fas fa-clock"></i> 45分08秒
+                            </div>
+                            <div class="history-item-actions">
+                                <div class="history-item-action">
+                                    <i class="fas fa-trash-alt"></i> 删除
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <div class="history-item-title">用户体验设计课程</div>
+                                <div class="history-item-date">10月12日</div>
+                            </div>
+                            <div class="history-item-type">
+                                <i class="fas fa-graduation-cap"></i> 课堂听课
+                            </div>
+                            <div class="history-item-duration">
+                                <i class="fas fa-clock"></i> 1小时23分钟
+                            </div>
+                            <div class="history-item-actions">
+                                <div class="history-item-action">
+                                    <i class="fas fa-trash-alt"></i> 删除
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <div class="history-item-title">每周团队例会</div>
+                                <div class="history-item-date">10月10日</div>
+                            </div>
+                            <div class="history-item-type">
+                                <i class="fas fa-calendar-check"></i> 定期例会
+                            </div>
+                            <div class="history-item-duration">
+                                <i class="fas fa-clock"></i> 32分45秒
+                            </div>
+                            <div class="history-item-actions">
+                                <div class="history-item-action">
+                                    <i class="fas fa-trash-alt"></i> 删除
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <div class="history-item-title">新功能创意讨论</div>
+                                <div class="history-item-date">10月5日</div>
+                            </div>
+                            <div class="history-item-type">
+                                <i class="fas fa-lightbulb"></i> 头脑风暴
+                            </div>
+                            <div class="history-item-duration">
+                                <i class="fas fa-clock"></i> 58分12秒
+                            </div>
+                            <div class="history-item-actions">
+                                <div class="history-item-action">
+                                    <i class="fas fa-trash-alt"></i> 删除
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <button class="button secondary">
+                        <i class="fas fa-microphone button-icon"></i>
+                        开始新录音
+                    </button>
+                </div>
+            </div>
+            <div class="screen-title">历史记录页面</div>
+        </div>
+    </div>
+    
+    <script>
+        // 这里可以添加一些简单的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 内容类型选择
+            const typeItems = document.querySelectorAll('.content-type-item');
+            typeItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    typeItems.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // 报告详情页选项卡切换
+            const reportTabs = document.querySelectorAll('.report-tab');
+            reportTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabGroup = this.parentElement.querySelectorAll('.report-tab');
+                    tabGroup.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // 格式化当前日期时间作为默认标题
+            function getFormattedDateTime() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                
+                return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+            }
+            
+            // 设置标题输入框的默认提示为当前日期时间
+            const titleInput = document.querySelector('.content-type-list').nextElementSibling.querySelector('.modal-input');
+            if (titleInput) {
+                titleInput.placeholder = getFormattedDateTime();
+            }
+            
+            // 处理提交按钮点击
+            const submitButton = document.querySelector('.content-type-list').nextElementSibling.nextElementSibling.querySelector('.button');
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    // 如果用户没有输入标题，则使用placeholder作为默认标题
+                    if (titleInput && !titleInput.value.trim()) {
+                        titleInput.value = titleInput.placeholder;
+                    }
+                    // 这里可以添加提交表单的逻辑
+                });
+            }
+            
+            // 处理开始录音按钮点击
+            const recordButton = document.querySelector('.record-button');
+            if (recordButton) {
+                recordButton.addEventListener('click', function() {
+                    // 模拟点击开始录音的操作
+                    console.log('开始录音');
+                    // 实际应用中这里会有跳转到录音界面的逻辑
+                });
+            }
+        });
+    </script>
+</body>
+</html>

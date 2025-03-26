@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI记事本 - 原型设计</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --secondary-color: #5AC8FA;
+            --success-color: #34C759;
+            --danger-color: #FF3B30;
+            --warning-color: #FFCC00;
+            --dark-color: #1c1c1e;
+            --medium-color: #48484a;
+            --light-color: #e5e5ea;
+            --ultra-light-color: #f2f2f7;
+            --white-color: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--ultra-light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 28px;
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin-top: 40px;
+            border-bottom: 1px solid var(--light-color);
+            padding-bottom: 8px;
+        }
+        
+        .prototype-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .prototype {
+            width: 375px;
+            height: 812px;
+            background-color: var(--white-color);
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            position: relative;
+            border: 10px solid var(--dark-color);
+            border-width: 10px 4px;
+        }
+        
+        .prototype:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background-color: var(--dark-color);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 10;
+        }
+        
+        .prototype-title {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--medium-color);
+        }
+        
+        .status-bar {
+            height: 44px;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            background-color: var(--white-color);
+        }
+        
+        .time {
+            font-weight: 600;
+        }
+        
+        .icons {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .nav-bar {
+            height: 44px;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--light-color);
+            background-color: var(--white-color);
+        }
+        
+        .nav-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-button {
+            color: var(--primary-color);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .content {
+            height: calc(100% - 88px);
+            overflow-y: auto;
+            padding: 16px;
+            background-color: var(--ultra-light-color);
+        }
+        
+        .note-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .note-item {
+            background-color: var(--white-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .note-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .note-preview {
+            font-size: 14px;
+            color: var(--medium-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--medium-color);
+        }
+        
+        .note-tags {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .tag {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+        }
+        
+        .search-input {
+            border: none;
+            background: transparent;
+            flex-grow: 1;
+            margin-left: 8px;
+            font-size: 16px;
+        }
+        
+        .editor {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-field {
+            font-size: 16px;
+            border: none;
+            padding: 12px;
+            flex-grow: 1;
+            resize: none;
+            background-color: var(--white-color);
+            border-radius: 12px;
+        }
+        
+        .input-title {
+            font-size: 22px;
+            font-weight: 600;
+            border: none;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: var(--white-color);
+            border-radius: 12px;
+        }
+        
+        .toolbar {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background-color: var(--white-color);
+            border-top: 1px solid var(--light-color);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .tool-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: var(--medium-color);
+            gap: 4px;
+        }
+        
+        .tool-button i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .tab-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            background-color: var(--white-color);
+            border-top: 1px solid var(--light-color);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: var(--medium-color);
+            gap: 4px;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+        }
+        
+        .tab i {
+            font-size: 24px;
+        }
+        
+        .ai-suggestions {
+            background-color: var(--white-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .suggestion-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .suggestion-title {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .suggestion-content {
+            font-size: 14px;
+            color: var(--medium-color);
+        }
+        
+        .button {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 16px;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .button-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--medium-color);
+            margin: 16px 0 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .ai-prompt {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .prompt-input {
+            background-color: var(--white-color);
+            border: 1px solid var(--light-color);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 16px;
+        }
+        
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .chip {
+            background-color: var(--light-color);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .chip.selected {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .modal {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--white-color);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-button {
+            color: var(--medium-color);
+            font-size: 24px;
+        }
+        
+        .share-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 24px;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .share-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        
+        .share-label {
+            font-size: 12px;
+        }
+        
+        .player-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px;
+            background-color: var(--white-color);
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+        
+        .player-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        .play-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white-color);
+            font-size: 24px;
+        }
+        
+        .player-speed {
+            background-color: var(--light-color);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: var(--light-color);
+            border-radius: 3px;
+            margin-top: 24px;
+            position: relative;
+        }
+        
+        .progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            width: 30%;
+        }
+        
+        .player-time {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--medium-color);
+        }
+        
+        .segmented-control {
+            display: flex;
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 2px;
+            margin-bottom: 16px;
+        }
+        
+        .segment {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--medium-color);
+            border-radius: 6px;
+        }
+        
+        .segment.active {
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--medium-color);
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            color: var(--light-color);
+        }
+        
+        .empty-text {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .empty-subtext {
+            font-size: 14px;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .title-dialog {
+            width: 80%;
+            background-color: var(--white-color);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        
+        .dialog-header {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--light-color);
+        }
+        
+        .dialog-content {
+            padding: 20px 16px;
+        }
+        
+        .title-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid var(--light-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .dialog-hint {
+            font-size: 13px;
+            color: var(--medium-color);
+            text-align: center;
+        }
+        
+        .dialog-buttons {
+            display: flex;
+            border-top: 1px solid var(--light-color);
+        }
+        
+        .dialog-button {
+            flex: 1;
+            padding: 14px 0;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .dialog-button.cancel {
+            color: var(--medium-color);
+            border-right: 0.5px solid var(--light-color);
+        }
+        
+        .dialog-button.confirm {
+            color: var(--primary-color);
+            border-left: 0.5px solid var(--light-color);
+        }
+        
+        .full-height {
+            height: 100%;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI记事本 iOS应用原型</h1>
+    
+    <div class="prototype-container">
+        <!-- 主界面 - 笔记列表 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-title">我的笔记</div>
+                    <div class="nav-button">
+                        <i class="fas fa-plus"></i> 新建
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="搜索笔记...">
+                    </div>
+                    
+                    <div class="note-list">
+                        <div class="note-item">
+                            <div class="note-title">今日工作计划</div>
+                            <div class="note-preview">今天需要完成项目报告的初稿，并安排下周与客户的会议。另外还需要准备明天的演讲材料...</div>
+                            <div class="note-meta">
+                                <div>今天 14:30</div>
+                                <div class="note-tags">
+                                    <div class="tag">工作</div>
+                                    <div class="tag">计划</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item">
+                            <div class="note-title">旅行准备清单</div>
+                            <div class="note-preview">1. 护照和机票 2. 充电器和转换插头 3. 必备药品 4. 换洗衣物 5. 洗漱用品...</div>
+                            <div class="note-meta">
+                                <div>昨天 18:45</div>
+                                <div class="note-tags">
+                                    <div class="tag">旅行</div>
+                                    <div class="tag">清单</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item">
+                            <div class="note-title">读书笔记：深度工作</div>
+                            <div class="note-preview">深度工作是指在没有干扰的情况下专注于一项认知需求高的活动。这种工作能够创造新价值...</div>
+                            <div class="note-meta">
+                                <div>3天前</div>
+                                <div class="note-tags">
+                                    <div class="tag">读书</div>
+                                    <div class="tag">效率</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item">
+                            <div class="note-title">产品创意</div>
+                            <div class="note-preview">一款结合AI的智能备忘录应用，能够自动分析用户的笔记内容，提供相关的资源和建议...</div>
+                            <div class="note-meta">
+                                <div>6天前</div>
+                                <div class="note-tags">
+                                    <div class="tag">创意</div>
+                                    <div class="tag">产品</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab active">
+                        <i class="fas fa-file-alt"></i>
+                        <div>笔记</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-tags"></i>
+                        <div>标签</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-search"></i>
+                        <div>搜索</div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">主界面 - 笔记列表</div>
+        </div>
+        
+        <!-- 新建/编辑笔记 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">新建笔记</div>
+                    <div class="nav-button">完成</div>
+                </div>
+                <div class="content">
+                    <div class="editor">
+                        <textarea class="input-field full-height" placeholder="开始输入您的笔记内容..."></textarea>
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="tool-button">
+                        <i class="fas fa-tags"></i>
+                        <div>标签</div>
+                    </div>
+                    <div class="tool-button">
+                        <i class="fas fa-magic"></i>
+                        <div>AI润色</div>
+                    </div>
+                    <div class="tool-button">
+                        <i class="fas fa-volume-up"></i>
+                        <div>朗读</div>
+                    </div>
+                    <div class="tool-button">
+                        <i class="fas fa-share-alt"></i>
+                        <div>分享</div>
+                    </div>
+                </div>
+                
+                <!-- 添加标题弹窗 -->
+                <div class="overlay">
+                    <div class="title-dialog">
+                        <div class="dialog-header">
+                            <h3>添加标题</h3>
+                        </div>
+                        <div class="dialog-content">
+                            <input type="text" class="title-input" placeholder="2023年7月15日 15:30">
+                            <div class="dialog-hint">您可以为笔记添加标题，或直接点击保存使用默认时间作为标题</div>
+                        </div>
+                        <div class="dialog-buttons">
+                            <button class="dialog-button cancel">取消</button>
+                            <button class="dialog-button confirm">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">新建/编辑笔记</div>
+        </div>
+        
+        <!-- 笔记详情 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">笔记详情</div>
+                    <div class="nav-button">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>今日工作计划</h3>
+                    
+                    <div class="note-meta" style="margin-bottom: 20px;">
+                        <div>今天 14:30</div>
+                        <div class="note-tags">
+                            <div class="tag">工作</div>
+                            <div class="tag">计划</div>
+                        </div>
+                    </div>
+                    
+                    <p>今天需要完成项目报告的初稿，并安排下周与客户的会议。</p>
+                    <p>具体任务清单：</p>
+                    <p>1. 整理上周的会议纪要，并发送给团队成员</p>
+                    <p>2. 完成项目进度报告的第一部分</p>
+                    <p>3. 联系客户确认下周会议的具体时间和地点</p>
+                    <p>4. 准备明天的演讲材料</p>
+                    <p>5. 与设计团队讨论新界面的设计方案</p>
+                    
+                    <div class="ai-suggestions">
+                        <div class="suggestion-header">
+                            <i class="fas fa-lightbulb" style="color: var(--warning-color);"></i>
+                            <div class="suggestion-title">AI优化建议</div>
+                        </div>
+                        <div class="suggestion-content">
+                            您的工作计划可以添加优先级标记，并考虑为每项任务分配具体的时间段，这样可以更有效地管理您的时间。另外建议添加每项任务的预期成果，以便更好地评估完成度。
+                        </div>
+                        <button class="button button-outline" style="margin-top: 12px;">
+                            应用AI建议
+                        </button>
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="tool-button">
+                        <i class="fas fa-tags"></i>
+                        <div>标签</div>
+                    </div>
+                    <div class="tool-button">
+                        <i class="fas fa-magic"></i>
+                        <div>AI润色</div>
+                    </div>
+                    <div class="tool-button">
+                        <i class="fas fa-volume-up"></i>
+                        <div>朗读</div>
+                    </div>
+                    <div class="tool-button">
+                        <i class="fas fa-share-alt"></i>
+                        <div>分享</div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">笔记详情</div>
+        </div>
+        
+        <!-- AI润色 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">AI润色</div>
+                    <div class="nav-button">应用</div>
+                </div>
+                <div class="content">
+                    <div class="section-title">输入关键词或简短描述</div>
+                    <div class="ai-prompt">
+                        <input type="text" class="prompt-input" placeholder="输入关键词，如'会议安排'，'周末计划'等">
+                        
+                        <div class="section-title">选择风格</div>
+                        <div class="chips">
+                            <div class="chip selected">简洁</div>
+                            <div class="chip">专业</div>
+                            <div class="chip">创意</div>
+                            <div class="chip">正式</div>
+                            <div class="chip">休闲</div>
+                        </div>
+                        
+                        <button class="button">
+                            生成内容
+                        </button>
+                    </div>
+                    
+                    <div class="section-title">AI生成结果</div>
+                    <div class="note-item" style="margin-top: 8px;">
+                        <h3 style="margin-bottom: 12px;">高效会议安排计划</h3>
+                        <p>为了确保下周的客户会议取得成功，我将着手完成以下准备工作：</p>
+                        <p>1. <strong>资料准备</strong>：整理上周会议纪要，汇总项目进度报告</p>
+                        <p>2. <strong>时间地点协调</strong>：与客户确认会议时间和具体地点，并提前发送日历邀请</p>
+                        <p>3. <strong>议程设计</strong>：制定详细会议议程，确保讨论重点突出</p>
+                        <p>4. <strong>演示准备</strong>：完成演示PPT，包括项目成果展示和后续规划</p>
+                        <p>5. <strong>团队协调</strong>：与设计团队确认最新界面设计方案，准备相关展示材料</p>
+                        <p>通过系统性的准备工作，确保会议高效进行，达到预期目标。</p>
+                    </div>
+                    
+                    <button class="button" style="margin-top: 20px;">
+                        应用此内容
+                    </button>
+                </div>
+            </div>
+            <div class="prototype-title">AI润色</div>
+        </div>
+        
+        <!-- 语音播放 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">语音播放</div>
+                    <div class="nav-button">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="player-container">
+                        <div class="player-title">今日工作计划</div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        
+                        <div class="player-time">
+                            <div>00:45</div>
+                            <div>02:30</div>
+                        </div>
+                        
+                        <div class="player-controls">
+                            <i class="fas fa-step-backward" style="font-size: 24px;"></i>
+                            <div class="play-button">
+                                <i class="fas fa-pause"></i>
+                            </div>
+                            <i class="fas fa-step-forward" style="font-size: 24px;"></i>
+                        </div>
+                        
+                        <div style="display: flex; gap: 16px; margin-top: 24px;">
+                            <div class="player-speed">0.5x</div>
+                            <div class="player-speed">1x</div>
+                            <div class="player-speed">1.5x</div>
+                            <div class="player-speed">2x</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">朗读内容</div>
+                    <div class="note-item" style="margin-top: 8px;">
+                        <p>今天需要完成项目报告的初稿，并安排下周与客户的会议。</p>
+                        <p>具体任务清单：</p>
+                        <p>1. 整理上周的会议纪要，并发送给团队成员</p>
+                        <p>2. 完成项目进度报告的第一部分</p>
+                        <p>3. 联系客户确认下周会议的具体时间和地点</p>
+                        <p>4. 准备明天的演讲材料</p>
+                        <p>5. 与设计团队讨论新界面的设计方案</p>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">语音播放</div>
+        </div>
+        
+        <!-- 标签管理 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-title">标签管理</div>
+                    <div class="nav-button">
+                        <i class="fas fa-plus"></i> 新建
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="搜索标签...">
+                    </div>
+                    
+                    <div class="section-title">常用标签</div>
+                    <div class="chips" style="margin-top: 8px;">
+                        <div class="chip">工作</div>
+                        <div class="chip">个人</div>
+                        <div class="chip">计划</div>
+                        <div class="chip">清单</div>
+                        <div class="chip">读书</div>
+                        <div class="chip">旅行</div>
+                    </div>
+                    
+                    <div class="section-title">所有标签</div>
+                    <div class="note-list">
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--primary-color);"></i>
+                                <div>工作</div>
+                            </div>
+                            <div style="color: var(--medium-color);">12笔记</div>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--secondary-color);"></i>
+                                <div>个人</div>
+                            </div>
+                            <div style="color: var(--medium-color);">8笔记</div>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--success-color);"></i>
+                                <div>计划</div>
+                            </div>
+                            <div style="color: var(--medium-color);">6笔记</div>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--warning-color);"></i>
+                                <div>清单</div>
+                            </div>
+                            <div style="color: var(--medium-color);">5笔记</div>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--danger-color);"></i>
+                                <div>读书</div>
+                            </div>
+                            <div style="color: var(--medium-color);">4笔记</div>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: #9C27B0;"></i>
+                                <div>旅行</div>
+                            </div>
+                            <div style="color: var(--medium-color);">3笔记</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab">
+                        <i class="fas fa-file-alt"></i>
+                        <div>笔记</div>
+                    </div>
+                    <div class="tab active">
+                        <i class="fas fa-tags"></i>
+                        <div>标签</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-search"></i>
+                        <div>搜索</div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">标签管理</div>
+        </div>
+        
+        <!-- 搜索结果 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-title">搜索</div>
+                </div>
+                <div class="content">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="搜索笔记..." value="会议">
+                        <i class="fas fa-times-circle" style="color: var(--medium-color);"></i>
+                    </div>
+                    
+                    <div class="section-title">搜索结果</div>
+                    <div class="note-list">
+                        <div class="note-item">
+                            <div class="note-title">今日工作计划</div>
+                            <div class="note-preview">今天需要完成项目报告的初稿，并安排下周与客户的<span style="background-color: rgba(255, 204, 0, 0.3);">会议</span>。另外还需要准备明天的演讲材料...</div>
+                            <div class="note-meta">
+                                <div>今天 14:30</div>
+                                <div class="note-tags">
+                                    <div class="tag">工作</div>
+                                    <div class="tag">计划</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item">
+                            <div class="note-title">团队<span style="background-color: rgba(255, 204, 0, 0.3);">会议</span>记录</div>
+                            <div class="note-preview">今天的团队<span style="background-color: rgba(255, 204, 0, 0.3);">会议</span>讨论了新项目的进展情况，各部门汇报了当前的工作进度和遇到的问题...</div>
+                            <div class="note-meta">
+                                <div>2天前</div>
+                                <div class="note-tags">
+                                    <div class="tag">工作</div>
+                                    <div class="tag">会议</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item">
+                            <div class="note-title">客户<span style="background-color: rgba(255, 204, 0, 0.3);">会议</span>准备</div>
+                            <div class="note-preview">下周与ABC公司的<span style="background-color: rgba(255, 204, 0, 0.3);">会议</span>需要准备的材料：1. 项目进度报告 2. 初步设计方案 3. 预算估算...</div>
+                            <div class="note-meta">
+                                <div>1周前</div>
+                                <div class="note-tags">
+                                    <div class="tag">工作</div>
+                                    <div class="tag">客户</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab">
+                        <i class="fas fa-file-alt"></i>
+                        <div>笔记</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-tags"></i>
+                        <div>标签</div>
+                    </div>
+                    <div class="tab active">
+                        <i class="fas fa-search"></i>
+                        <div>搜索</div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">搜索结果</div>
+        </div>
+        
+        <!-- 分享界面 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">笔记详情</div>
+                    <div class="nav-button">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+                <div class="content" style="opacity: 0.3;">
+                    <h3>今日工作计划</h3>
+                    
+                    <div class="note-meta" style="margin-bottom: 20px;">
+                        <div>今天 14:30</div>
+                        <div class="note-tags">
+                            <div class="tag">工作</div>
+                            <div class="tag">计划</div>
+                        </div>
+                    </div>
+                    
+                    <p>今天需要完成项目报告的初稿，并安排下周与客户的会议。</p>
+                    <p>具体任务清单：</p>
+                    <p>1. 整理上周的会议纪要，并发送给团队成员</p>
+                    <p>2. 完成项目进度报告的第一部分</p>
+                    <p>3. 联系客户确认下周会议的具体时间和地点</p>
+                    <p>4. 准备明天的演讲材料</p>
+                    <p>5. 与设计团队讨论新界面的设计方案</p>
+                </div>
+                
+                <div class="modal" style="height: 50%;">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">分享笔记</h3>
+                        <i class="fas fa-times close-button"></i>
+                    </div>
+                    
+                    <div class="segmented-control">
+                        <div class="segment active">链接</div>
+                        <div class="segment">图片</div>
+                        <div class="segment">文本</div>
+                    </div>
+                    
+                    <div class="note-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>https://ai-notes.app/share/abc123</div>
+                        <div style="color: var(--primary-color); font-weight: 500;">复制</div>
+                    </div>
+                    
+                    <div class="share-options">
+                        <div class="share-option">
+                            <div class="share-icon" style="background-color: #4267B2; color: white;">
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <div class="share-label">Facebook</div>
+                        </div>
+                        
+                        <div class="share-option">
+                            <div class="share-icon" style="background-color: #1DA1F2; color: white;">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <div class="share-label">Twitter</div>
+                        </div>
+                        
+                        <div class="share-option">
+                            <div class="share-icon" style="background-color: #25D366; color: white;">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="share-label">WhatsApp</div>
+                        </div>
+                        
+                        <div class="share-option">
+                            <div class="share-icon" style="background-color: var(--light-color);">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="share-label">邮件</div>
+                        </div>
+                    </div>
+                    
+                    <button class="button" style="margin-top: 30px;">
+                        更多选项
+                    </button>
+                </div>
+            </div>
+            <div class="prototype-title">分享界面</div>
+        </div>
+        
+        <!-- 添加标签 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">添加标签</div>
+                    <div class="nav-button">完成</div>
+                </div>
+                <div class="content">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="搜索或创建标签...">
+                    </div>
+                    
+                    <div class="section-title">已选标签</div>
+                    <div class="chips" style="margin-top: 8px;">
+                        <div class="chip selected">
+                            工作 <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="chip selected">
+                            计划 <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">建议标签</div>
+                    <div class="chips" style="margin-top: 8px;">
+                        <div class="chip">会议</div>
+                        <div class="chip">任务</div>
+                        <div class="chip">项目</div>
+                        <div class="chip">日程</div>
+                    </div>
+                    
+                    <div class="section-title">所有标签</div>
+                    <div class="note-list">
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--primary-color);"></i>
+                                <div>工作</div>
+                            </div>
+                            <i class="fas fa-check" style="color: var(--success-color);"></i>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--secondary-color);"></i>
+                                <div>个人</div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--success-color);"></i>
+                                <div>计划</div>
+                            </div>
+                            <i class="fas fa-check" style="color: var(--success-color);"></i>
+                        </div>
+                        
+                        <div class="note-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-tag" style="color: var(--warning-color);"></i>
+                                <div>清单</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">添加标签</div>
+        </div>
+        
+        <!-- AI分析建议 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">AI分析建议</div>
+                    <div class="nav-button">应用</div>
+                </div>
+                <div class="content">
+                    <div class="section-title">原笔记内容</div>
+                    <div class="note-item" style="margin-bottom: 20px;">
+                        <div style="font-weight: 600; margin-bottom: 8px;">项目进展汇报</div>
+                        <p>团队已完成设计方案，正在进行初步开发。遇到一些技术问题，计划下周解决。与客户沟通良好，对方期待下一次的演示。需要准备下周的进度报告。</p>
+                    </div>
+                    
+                    <div class="section-title">AI分析结果</div>
+                    <div class="ai-suggestions" style="margin-bottom: 20px;">
+                        <div class="suggestion-header">
+                            <i class="fas fa-chart-bar" style="color: var(--primary-color);"></i>
+                            <div class="suggestion-title">内容结构分析</div>
+                        </div>
+                        <div class="suggestion-content">
+                            您的笔记包含了项目当前状态、问题、客户反馈和待办事项，但缺少具体时间线和责任人分配。建议以更结构化的方式组织内容。
+                        </div>
+                    </div>
+                    
+                    <div class="ai-suggestions" style="margin-bottom: 20px;">
+                        <div class="suggestion-header">
+                            <i class="fas fa-lightbulb" style="color: var(--warning-color);"></i>
+                            <div class="suggestion-title">内容完善建议</div>
+                        </div>
+                        <div class="suggestion-content">
+                            建议添加：1) 具体的技术问题描述 2) 解决方案的初步构想 3) 进度报告的关键内容 4) 下一阶段的具体目标和时间节点
+                        </div>
+                    </div>
+                    
+                    <div class="ai-suggestions">
+                        <div class="suggestion-header">
+                            <i class="fas fa-tags" style="color: var(--secondary-color);"></i>
+                            <div class="suggestion-title">推荐标签</div>
+                        </div>
+                        <div class="chips" style="margin-top: 12px; margin-bottom: 8px;">
+                            <div class="chip">项目</div>
+                            <div class="chip">进度</div>
+                            <div class="chip">会议</div>
+                            <div class="chip">开发</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">优化后的内容建议</div>
+                    <div class="note-item">
+                        <div style="font-weight: 600; margin-bottom: 8px;">项目进展汇报 (6月15日)</div>
+                        <p><strong>当前进度：</strong></p>
+                        <p>✅ 设计方案已完成并获得团队一致认同</p>
+                        <p>🔄 初步开发工作进行中 (完成度约40%)</p>
+                        <p><strong>技术问题：</strong></p>
+                        <p>⚠️ API集成遇到兼容性问题</p>
+                        <p>⚠️ 性能优化需要进一步调研</p>
+                        <p><strong>客户反馈：</strong></p>
+                        <p>👍 对当前设计方案表示满意</p>
+                        <p>🔔 期待下周的功能演示</p>
+                        <p><strong>下周任务：</strong></p>
+                        <p>📝 准备进度报告 (张明负责，周三前完成)</p>
+                        <p>🛠️ 解决API集成问题 (技术团队，周二讨论方案)</p>
+                        <p>📊 准备客户演示内容 (李华负责，周五前完成)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">AI分析建议</div>
+        </div>
+        
+        <!-- 记事本历史 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-button">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </div>
+                    <div class="nav-title">笔记历史</div>
+                    <div class="nav-button">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="note-title" style="margin-bottom: 16px;">今日工作计划</div>
+                    
+                    <div class="segmented-control">
+                        <div class="segment active">所有修改</div>
+                        <div class="segment">AI润色</div>
+                    </div>
+                    
+                    <div class="note-list">
+                        <div class="note-item" style="border-left: 3px solid var(--primary-color); padding-left: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">当前版本</div>
+                                <div style="color: var(--medium-color);">今天 15:45</div>
+                            </div>
+                            <div class="note-preview">今天需要完成项目报告的初稿，并安排下周与客户的会议。具体任务清单：1. 整理上周的会议纪要 2. 完成项目进度报告 3. 联系客户确认会议时间...</div>
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                                <div style="color: var(--primary-color); font-weight: 500;">恢复</div>
+                                <div style="color: var(--primary-color); font-weight: 500;">查看</div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item" style="border-left: 3px solid var(--secondary-color); padding-left: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">AI润色修改</div>
+                                <div style="color: var(--medium-color);">今天 14:30</div>
+                            </div>
+                            <div class="note-preview">为确保项目顺利进行，今天必须完成项目报告初稿并协调下周客户会议。优先任务：1. 整理并分发上周会议纪要 2. 撰写详细项目进度报告...</div>
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                                <div style="color: var(--primary-color); font-weight: 500;">恢复</div>
+                                <div style="color: var(--primary-color); font-weight: 500;">查看</div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-item" style="border-left: 3px solid var(--light-color); padding-left: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">初始版本</div>
+                                <div style="color: var(--medium-color);">今天 10:15</div>
+                            </div>
+                            <div class="note-preview">完成项目报告，安排客户会议。整理会议纪要，准备进度报告，联系客户，准备演讲材料。</div>
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                                <div style="color: var(--primary-color); font-weight: 500;">恢复</div>
+                                <div style="color: var(--primary-color); font-weight: 500;">查看</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">笔记历史</div>
+        </div>
+        
+        <!-- 空状态界面 -->
+        <div>
+            <div class="prototype">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="nav-bar">
+                    <div class="nav-title">我的笔记</div>
+                    <div class="nav-button">
+                        <i class="fas fa-plus"></i> 新建
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="搜索笔记...">
+                    </div>
+                    
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="empty-text">没有笔记</div>
+                        <div class="empty-subtext">点击右上角的"新建"按钮创建您的第一个笔记，或者使用AI帮助您创建内容丰富的笔记。</div>
+                        <button class="button" style="max-width: 200px; margin-top: 24px;">
+                            <i class="fas fa-plus"></i> 新建笔记
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab active">
+                        <i class="fas fa-file-alt"></i>
+                        <div>笔记</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-tags"></i>
+                        <div>标签</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-search"></i>
+                        <div>搜索</div>
+                    </div>
+                </div>
+            </div>
+            <div class="prototype-title">空状态界面</div>
+        </div>
+    </div>
+</body>
+</html> 
