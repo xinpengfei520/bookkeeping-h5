@@ -17,7 +17,7 @@ const contentList = [
       content: [
         '<b class="ltittle">1.2 忘记手势密码怎么办？</b>',
         '如果您忘记手势密码，请按以下步骤操作：',
-       '<ul  class="pl3rem"> <li>在绘制手势密码界面点击“忘记密码”</li><div class="tac"> <img src="./img/shoushi1.jpeg" class="wrap-pic adjust"></img></div><li>选择「手机登录」或者「微信登录」，重新登录</li> <li>或者点击最下方「退出登录」，重新选择登录方式</li>  <div class="tac"> <img src="./img/shoushi2.jpeg" class="wrap-pic adjust"></img></div>   <div class="tac"> <img src="./img/shoushi3.jpeg" class="wrap-pic adjust"></img></div><li><b>注意：账号退出，重新登录后，手势密码会失效，需重新设置</b></li></ul>',
+       '<ul  class="pl3rem"> <li>在绘制手势密码界面点击"忘记密码"</li> <li>选择「手机登录」或者「微信登录」，重新登录</li> <li>或者点击最下方「退出登录」，重新选择登录方式</li> <li><b>注意：账号退出，重新登录后，手势密码会失效，需重新设置</b></li></ul>',
         
       ]
     },
@@ -68,7 +68,7 @@ const contentList = [
         title: '1.8 手机号/微信号绑定问题',
         content: [
           '<b class="ltittle">1.8 手机号/微信号绑定问题</b>',
-          '<ul  class="pl3rem"> <li>为提高安全性，微信登录时建议您绑定手机号</li>  <li>若想绑定的手机号提示“手机号已注册”，建议您核实该手机号是否还在使用</li><li>若是您本人使用，可尝试：<b>使用该手机号登录-注销该账号-切换回微信登录，重新绑定</b></li> <li>若非您本人使用，可通过【我的 ➝ 设置 ➝ 意见反馈】咨询客服解决</li></ul>',
+          '<ul  class="pl3rem"> <li>为提高安全性，微信登录时建议您绑定手机号</li>  <li>若想绑定的手机号提示"手机号已注册"，建议您核实该手机号是否还在使用</li><li>若是您本人使用，可尝试：<b>使用该手机号登录-注销该账号-切换回微信登录，重新绑定</b></li> <li>若非您本人使用，可通过【我的 ➝ 设置 ➝ 意见反馈】咨询客服解决</li></ul>',
     
         ]
       },
@@ -84,7 +84,6 @@ const contentList = [
         content: [
           '<b class="ltittle">1.10 如何注销账户？</b>',
          '<ul  class="pl3rem"> <li>点击【我的】页头像，进入个人信息页，点击最下方「注销账号」即可</li> <li><b>注意：注销后所有信息将被清空且无法找回，建议谨慎操作</b></li>  </ul>',
-         '    <div class="tac"> <img src="./img/zhuxiao.png" class="wrap-pic adjust"></img></div>',  
 
         ]
       },
@@ -92,7 +91,7 @@ const contentList = [
         title: '2.1 如何添加更多记账类别？',
         content: [
           '<b class="ltittle">2.1 如何添加更多记账类别？</b>',
-         '<ul  class="pl3rem"> <li>当系统提供的记账类别不够用时，可通过【添加类别】功能添加更多记账类别</li> <li>点击【我的 ➝ 设置 ➝ 类别设置 ➝ 添加类别】，即可使用</li> <li>普通用户可添加20个自定义类别，VIP用户可添加50个自定义类别</li><li>长按类别右侧按钮，可拖动调整顺序</li><div class="tac"> <img src="./img/shanchuleibie1.jpeg" class="wrap-pic adjust"></img></div><li>点击类别左侧删除按钮，可删除类别</li><div class="tac"> <img src="./img/shanchuleibie2.jpeg" class="wrap-pic adjust"></img></div><li><b>注意：删除某个类别时，需要先删除该类别下的全部数据，建议谨慎操作</b></li></ul>',
+         '<ul  class="pl3rem"> <li>当系统提供的记账类别不够用时，可通过【添加类别】功能添加更多记账类别</li> <li>点击【我的 ➝ 设置 ➝ 类别设置 ➝ 添加类别】，即可使用</li> <li>普通用户可添加20个自定义类别，VIP用户可添加50个自定义类别</li><li>长按类别右侧按钮，可拖动调整顺序</li><li>点击类别左侧删除按钮，可删除类别</li><li><b>注意：删除某个类别时，需要先删除该类别下的全部数据，建议谨慎操作</b></li></ul>',
       
     
         ]
@@ -152,7 +151,7 @@ const contentList = [
         title: '3.1 如何快速修改一笔账？',
         content: [
           '<b class="ltittle">3.1 如何快速修改一笔账？</b>',
-         '<ul  class="pl3rem"> <li>请确认【我的 ➝ 设置 ➝ 明细详情】处的按钮置于关闭状态</li> <div class="tac"> <img src="./img/kuaijie1.jpeg" class="wrap-pic adjust"></img></div>  <li>轻点【明细】页每一笔账单的类别图标、备注、金额，可修改相应内容</li> <div class="tac"> <img src="./img/kuaijie2.jpeg" class="wrap-pic adjust"></img></div>            <div class="tac"> <img src="./img/kuaijie3.jpeg" class="wrap-pic adjust"></img></div></ul>',
+         '<ul  class="pl3rem"> <li>请确认【我的 ➝ 设置 ➝ 明细详情】处的按钮置于关闭状态</li> <li>轻点【明细】页每一笔账单的类别图标、备注、金额，可修改相应内容</li></ul>',
             
 
         ]
@@ -161,7 +160,7 @@ const contentList = [
         title: '3.2 如何指定日期记账？/如何补记账？',
         content: [
           '<b class="ltittle">3.2 如何指定日期记账？/如何补记账？</b>',
-         '<ul  class="pl3rem">   <div class="pb00"><b >方式一：</b> </div ><li>记账时，点击键盘上的「今天」 </li>  <div class="tac"> <img src="./img/buji1.jpeg" class="wrap-pic adjust"></img></div> <li>弹出时间选项后，选择日期即可</li> <div class="tac"> <img src="./img/buji2.jpeg" class="wrap-pic adjust"></img></div><div class="pb00"><b>方式二：</b></div><li>升级为会员，使用日历记账。点击【明细】页右上方日历图标<div class="tac"> <img src="./img/buji3.png" class="wrap-pic adjust"></img></div></li><li>选中某天后，轻触下方➕号 ，即可快速补记账</li> <div class="tac"> <img src="./img/buji4.jpeg" class="wrap-pic adjust"></img></div>     </ul>',
+         '<ul  class="pl3rem">   <div class="pb00"><b >方式一：</b> </div ><li>记账时，点击键盘上的「今天」 </li> <li>弹出时间选项后，选择日期即可</li><div class="pb00"><b>方式二：</b></div><li>升级为会员，使用日历记账。点击【明细】页右上方日历图标</li><li>选中某天后，轻触下方➕号 ，即可快速补记账</li></ul>',
  
 
         ]
@@ -170,7 +169,7 @@ const contentList = [
         title: '3.3 如何修改记账日期？',
         content: [
           '<b class="ltittle">3.3 如何修改记账日期？</b>',
-         '<ul  class="pl3rem"><div class="pb00"><b>方式一：</b></div><li>【设置-明细详情】按钮关闭</li><div class="tac"> <img src="./img/riqi1.jpeg" class="wrap-pic adjust"></img></div><li>轻点【明细】页记账明细的金额，点击键盘上的日期</li> <div class="tac"> <img src="./img/riqi2.jpeg" class="wrap-pic adjust"></img></div> <li> 重新选择日期即可</li> <div class="tac"> <img src="./img/riqi3.jpeg" class="wrap-pic adjust"></img></div><div class="pb00"><b>方式二：</b></div><li>【设置-明细详情】按钮打开<div class="tac"> <img src="./img/riqi4.jpeg" class="wrap-pic adjust"></img></div><li> 点击某笔账单，进入详情页，点击详情页下方「编辑」 </li> <div class="tac"> <img src="./img/riqi5.jpeg" class="wrap-pic adjust"></img></div> <li> 点击键盘上的日期</li> <div class="tac"> <img src="./img/riqi6.jpeg" class="wrap-pic adjust"></img></div> <li> 重新选择日期即可</li> <div class="tac"> <img src="./img/riqi7.jpeg" class="wrap-pic adjust"></img></div></ul>',
+         '<ul  class="pl3rem"><div class="pb00"><b>方式一：</b></div><li>【设置-明细详情】按钮关闭</li><li>轻点【明细】页记账明细的金额，点击键盘上的日期</li><li>重新选择日期即可</li><div class="pb00"><b>方式二：</b></div><li>【设置-明细详情】按钮打开</li><li>点击某笔账单，进入详情页，点击详情页下方「编辑」 </li><li>点击键盘上的日期</li><li>重新选择日期即可</li></ul>',
     
 
         ]
@@ -179,14 +178,14 @@ const contentList = [
         title: '3.4 如何删除一笔账？',
         content: [
           '<b class="ltittle">3.4 如何删除一笔账？</b>',
-         '<ul  class="pl3rem"> <div class="pb00"><b>方式一：</b></div><li>轻触记账明细向左划，出现删除按钮，点击按钮即可删除</li> <div class="tac"> <img src="./img/shanchu1.jpeg" class="wrap-pic adjust"></img></div> <div class="pb00"><b>方式二：</b></div><li>【设置-明细详情】按钮打开<div class="tac"> <img src="./img/riqi4.jpeg" class="wrap-pic adjust"></img></div><li> 点击某笔账单，进入详情页，点击详情页下方「删除」即可 </li> <div class="tac"> <img src="./img/shanchu3.jpeg" class="wrap-pic adjust"></img></div><li><b>注意：删除后的数据无法找回，建议谨慎操作</b></li></ul>',
+         '<ul  class="pl3rem"> <div class="pb00"><b>方式一：</b></div><li>轻触记账明细向左划，出现删除按钮，点击按钮即可删除</li><div class="pb00"><b>方式二：</b></div><li>【设置-明细详情】按钮打开</li><li>点击某笔账单，进入详情页，点击详情页下方「删除」即可 </li><li><b>注意：删除后的数据无法找回，建议谨慎操作</b></li></ul>',
         ]
       },
       {
         title: '4.1 如何使用搜索功能？',
         content: [
           '<b class="ltittle">4.1 如何使用搜索功能？</b>',
-         '<ul  class="pl3rem"><li>点击【明细】页右上方搜索标识</li><div class="tac"> <img src="./img/sousuo1.png" class="wrap-pic adjust"></img></div> <li>可根据记账类别、备注进行搜索</li><div class="tac"> <img src="./img/sousuo2.png" class="wrap-pic adjust"></img></div><div class="tac"> <img src="./img/sousuo3.jpeg" class="wrap-pic adjust"></img></div><li>升级为VIP会员后可使用该功能</li>  </ul>',
+         '<ul  class="pl3rem"><li>点击【明细】页右上方搜索标识</li><li>可根据记账类别、备注进行搜索</li><li>升级为VIP会员后可使用该功能</li></ul>',
 
         ]
       },
@@ -194,14 +193,14 @@ const contentList = [
         title: '4.2 如何查看指定日期的记账信息？',
         content: [
           '<b class="ltittle">4.2 如何查看指定日期的记账信息？</b>',
-         '<ul  class="pl3rem"> <li>点击【明细】页右上方日历标识</li>         <div class="tac"> <img src="./img/rili1.png" class="wrap-pic adjust"></img></div> <li>选择日期后，会显示当天所有账单</li>         <div class="tac"> <img src="./img/rili2.jpeg" class="wrap-pic adjust"></img></div><li>升级为VIP会员后可使用该功能</li> </ul>',
+         '<ul  class="pl3rem"> <li>点击【明细】页右上方日历标识</li><li>选择日期后，会显示当天所有账单</li><li>升级为VIP会员后可使用该功能</li></ul>',
         ]
       },
       {
         title: '4.3 如何隐藏首页顶部的收入/支出总金额？',
         content: [
           '<b class="ltittle">4.3 如何隐藏首页顶部的收入/支出总金额？</b>',
-         '<ul  class="pl3rem"> <li>轻点【明细】页右上方「眼睛」的标识可隐藏收入、支出总金额</li>    <div class="tac"> <img src="./img/yincang1.png" class="wrap-pic adjust"></img></div>  <div class="tac"> <img src="./img/yincang2.png" class="wrap-pic adjust"></img></div><li>升级为VIP会员后可使用该功能</li></ul>',
+         '<ul  class="pl3rem"> <li>轻点【明细】页右上方「眼睛」的标识可隐藏收入、支出总金额</li><li>升级为VIP会员后可使用该功能</li></ul>',
       
         ]
       },
@@ -209,21 +208,21 @@ const contentList = [
         title: '4.4 如何使用饼图查看收支统计？',
         content: [
           '<b class="ltittle">4.4 如何使用饼图查看收支统计？</b>',
-         '<ul  class="pl3rem"> <li>轻点【图表】页右上方「饼图」标识</li>         <div class="tac"> <img src="./img/bingtu1.jpeg" class="wrap-pic adjust"></img></div>  <li>进入饼图统计页，查看饼图统计结果</li>         <div class="tac"> <img src="./img/bingtu2.jpeg" class="wrap-pic adjust"></img></div> <li>升级为VIP会员后可使用该功能</li></ul>',
+         '<ul  class="pl3rem"> <li>轻点【图表】页右上方「饼图」标识</li><li>进入饼图统计页，查看饼图统计结果</li><li>升级为VIP会员后可使用该功能</li></ul>',
         ]
       },
       {
         title: '4.5 如何导出记账数据？',
         content: [
           '<b class="ltittle">4.5 如何导出记账数据？</b>',
-          '<ul  class="pl3rem"><li>点击【我的 ➝ 设置 ➝ 导出数据】</li><div class="tac"> <img src="./img/daochu1.jpeg" class="wrap-pic adjust"></img></div><li>可自定义导出账单的起止时间</li><div class="tac"> <img src="./img/daochu2.jpeg" class="wrap-pic adjust"></img></div> <li>导出的文件为csv格式，您可以：</li> <ul  class="pl3rem"> <li>使用手机上已安装的浏览器或其他软件打开查看</li><li> 还可以分享至第三方后，使用电脑打开查看</li> </ul> <div class="tac"> <img src="./img/daochu3.jpeg" class="wrap-pic adjust"></img></div><li><b>注意：如果导出的excel表日期列显示为“######”，此为日期列宽度过小所致，拉宽日历列即可</b></li><li>升级为VIP会员后可使用该功能</li></ul>',
+          '<ul  class="pl3rem"><li>点击【我的 ➝ 设置 ➝ 导出数据】</li><li>可自定义导出账单的起止时间</li><li>导出的文件为csv格式，您可以：</li> <ul  class="pl3rem"> <li>使用手机上已安装的浏览器或其他软件打开查看</li><li>还可以分享至第三方后，使用电脑打开查看</li></ul><li><b>注意：如果导出的excel表日期列显示为"######"，此为日期列宽度过小所致，拉宽日历列即可</b></li><li>升级为VIP会员后可使用该功能</li></ul>',
         ]
       },
       {
         title: '4.6 如何使用资产管家？',
         content: [
           '<b class="ltittle">4.6 如何使用资产管家？</b>',
-          '<ul  class="pl3rem"><li>由【明细 ➝ 资产管家】进入</li><div class="tac"> <img src="./img/zichan1.png" class="wrap-pic adjust"></img></div><li>点击下方「添加资产」按钮，添加各项资产</li> <div class="tac"> <img src="./img/zichan2.jpeg" class="wrap-pic adjust"></img></div><li>【资产】页可以查看各项资产 </li> <div class="tac"> <img src="./img/zichan3.jpeg" class="wrap-pic adjust"></img></div> <li>【图表】页可以查看资产的排行榜及各资产在总资产中的占比 </li> <div class="tac"> <img src="./img/zichan4.jpeg" class="wrap-pic adjust"></img></div><li>只需定期记录资产数据，即可轻松掌握财务状况</li> </ul>',
+          '<ul  class="pl3rem"><li>由【明细 ➝ 资产管家】进入</li><li>点击下方「添加资产」按钮，添加各项资产</li><li>【资产】页可以查看各项资产</li><li>【图表】页可以查看资产的排行榜及各资产在总资产中的占比</li><li>只需定期记录资产数据，即可轻松掌握财务状况</li></ul>',
 
         ]
       },
