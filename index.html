@@ -39,6 +39,32 @@
         .contact-info a:hover {
             text-decoration: underline;
         }
+        
+        /* 添加图片容器样式 */
+        .img-container {
+            width: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        /* 保持图片原始宽高比 */
+        .app-screenshot {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .img-container {
+                width: 250px;
+            }
+        }
   </style>
 
 </head>
@@ -82,7 +108,9 @@
     <h2>账单明细</h2>
     <p>账单明细记录查询和详细数据显示，收入和支出查询，随手记录，简单方便</p>
   </div>
-  <img src="./img/jiya_app_screenshot_1.png" class="right">
+  <div class="right img-container">
+    <img src="./img/jiya_app_screenshot_1.png" class="app-screenshot">
+  </div>
 </div>
 
 <div class="y-gutter-120"></div>
@@ -92,7 +120,9 @@
     <h2>图表显示</h2>
     <p>支持按照支出、收入、年、月、周等维度的数据显示，各种重要数据展示，直观清晰，一目了然</p>
   </div>
-  <img src="./img/jiya_app_screenshot_2.png" class="left">
+  <div class="left img-container">
+    <img src="./img/jiya_app_screenshot_2.png" class="app-screenshot">
+  </div>
 </div>
 
 <div class="y-gutter-120"></div>
@@ -102,7 +132,9 @@
     <h2>预算管理</h2>
     <p>设置每月预算，科学规划支出，实时监控预算使用情况，帮助您合理安排资金，养成良好消费习惯</p>
   </div>
-  <img src="./img/jiya_app_screenshot_3.png" class="right">
+  <div class="right img-container">
+    <img src="./img/jiya_app_screenshot_3.png" class="app-screenshot">
+  </div>
 </div>
 
 <div class="y-gutter-120"></div>
@@ -112,7 +144,9 @@
     <h2>资产一览</h2>
     <p>全面管理各类资产，包括现金、银行卡、信用卡等，轻松掌握个人总资产状况，财务一目了然</p>
   </div>
-  <img src="./img/jiya_app_screenshot_4.png" class="left">
+  <div class="left img-container">
+    <img src="./img/jiya_app_screenshot_4.png" class="app-screenshot">
+  </div>
 </div>
 
 <div class="y-gutter-120"></div>
